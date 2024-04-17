@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import * as dat from 'dat.gui';
 
 // calling webGL for getting up the space in web page to play with 3d
 const renderer = new THREE.WebGLRenderer();
@@ -70,11 +71,29 @@ const sphereGeometry = new THREE.SphereGeometry(4, 20, 20);
 const sphereMaterial = new THREE.MeshBasicMaterial({
     color: 0x0000FF,
     // adds and removes wireframe from 3d object
-    wireframe: true
+    wireframe: false
 });
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 scene.add(sphere);
 sphere.position.set(-10, 10, 0);
+
+// creating GUI instance
+const gui = new dat.GUI();
+
+//setting up GUI options for sphere
+const options = {
+    sphereColor: '#ffea00',
+    wireframe: false,
+};
+
+gui.addColor(options, 'sphereColor').onChange(function (e) {
+    sphere.material.color.set(e);
+});
+
+gui.add(options, 'wireframe').onChange(function (e) {
+    sphere.material.wireframe = e;
+});
+
 
 //adding animation
 function animate(time) {
