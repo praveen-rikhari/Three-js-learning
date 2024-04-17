@@ -61,6 +61,8 @@ const planeMaterial = new THREE.MeshBasicMaterial({
 const plane = new THREE.Mesh(planeGeometry, planeMaterial);
 scene.add(plane);
 plane.rotation.x = -0.5 * Math.PI;
+// plane will receive shadows of the objects
+plane.receiveShadow = true;
 
 //adding grid helper
 const gridHelper = new THREE.GridHelper(30);
@@ -76,6 +78,8 @@ const sphereMaterial = new THREE.MeshStandardMaterial({
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 scene.add(sphere);
 sphere.position.set(-10, 10, 0);
+// sphere will cast shadow on plane
+sphere.castShadow = true;
 
 // adding ambident light
 const ambientLight = new THREE.AmbientLight(0x333333);
@@ -86,10 +90,15 @@ const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 0.8);
 scene.add(directionalLight);
 
 directionalLight.position.set(-30, 50, 0);
+directionalLight.castShadow = true;
+directionalLight.shadow.camera.bottom = -12;
 
 // directional light helper
 const dLightHelper = new THREE.DirectionalLightHelper(directionalLight, 5);
 scene.add(dLightHelper);
+
+const dLightShadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
+scene.add(dLightShadowHelper);
 
 // creating GUI instance
 const gui = new dat.GUI();
