@@ -86,19 +86,30 @@ const ambientLight = new THREE.AmbientLight(0x333333);
 scene.add(ambientLight);
 
 // adding directional light
-const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 0.8);
-scene.add(directionalLight);
+// const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 0.8);
+// scene.add(directionalLight);
 
-directionalLight.position.set(-30, 50, 0);
-directionalLight.castShadow = true;
-directionalLight.shadow.camera.bottom = -12;
+// directionalLight.position.set(-30, 50, 0);
+// directionalLight.castShadow = true;
+// directionalLight.shadow.camera.bottom = -12;
 
-// directional light helper
-const dLightHelper = new THREE.DirectionalLightHelper(directionalLight, 5);
-scene.add(dLightHelper);
+// // directional light helper
+// const dLightHelper = new THREE.DirectionalLightHelper(directionalLight, 5);
+// scene.add(dLightHelper);
 
-const dLightShadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
-scene.add(dLightShadowHelper);
+// const dLightShadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
+// scene.add(dLightShadowHelper);
+
+//creating spot Light
+const spotLight = new THREE.SpotLight(0xFFFFFF);
+scene.add(spotLight);
+spotLight.position.set(-100, 100, 0);
+spotLight.castShadow = true;
+spotLight.angle = 0.2;
+
+//spotlight helper
+const sLightHelper = new THREE.SpotLightHelper(spotLight);
+scene.add(sLightHelper);
 
 // creating GUI instance
 const gui = new dat.GUI();
@@ -108,6 +119,9 @@ const options = {
     sphereColor: '#ffea00',
     wireframe: false,
     speed: 0.01,
+    angle: 0.2,
+    penumbra: 0,
+    intensity: 1
 };
 
 gui.addColor(options, 'sphereColor').onChange(function (e) {
@@ -120,6 +134,12 @@ gui.add(options, 'wireframe').onChange(function (e) {
 
 gui.add(options, 'speed', 0, 0.1);
 
+gui.add(options, 'angle', 0, 1);
+
+gui.add(options, 'penumbra', 0, 1);
+
+gui.add(options, 'intensity', 0, 1);
+
 let step = 0;
 
 //adding animation
@@ -131,6 +151,12 @@ function animate(time) {
     // sphere bouncing animation
     step += options.speed;
     sphere.position.y = 10 * Math.abs(Math.sin(step));
+
+    //spotlight options
+    spotLight.angle = options.angle;
+    spotLight.penumbra = options.penumbra;
+    spotLight.intensity = options.intensity;
+    sLightHelper.update();
 
     // linking scene with camera
     renderer.render(scene, camera);
