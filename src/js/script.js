@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 // calling webGL for getting up the space in web page to play with 3d
 const renderer = new THREE.WebGLRenderer();
@@ -21,6 +22,9 @@ const camera = new THREE.PerspectiveCamera(
     1000
 );
 
+// creating instance of orbit control class
+const orbit = new OrbitControls(camera, renderer.domElement);
+
 // adding axeshelper to guide through coordinates axes
 // 5 here represents the length of the axes
 const axesHelper = new THREE.AxesHelper(5);
@@ -29,7 +33,10 @@ const axesHelper = new THREE.AxesHelper(5);
 scene.add(axesHelper);
 
 //changing camera position w.r.t. z-axis and y-axis
-camera.position.set(0, 2, 5)
+camera.position.set(0, 2, 5);
+
+// we need to update then scene after everytime we change the camera postions
+orbit.update();
 
 // adding object
 const boxGeometry = new THREE.BoxGeometry();
