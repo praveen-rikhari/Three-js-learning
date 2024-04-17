@@ -68,7 +68,7 @@ scene.add(gridHelper);
 
 // adding sphere
 const sphereGeometry = new THREE.SphereGeometry(4, 20, 20);
-const sphereMaterial = new THREE.MeshBasicMaterial({
+const sphereMaterial = new THREE.MeshStandardMaterial({
     color: 0x0000FF,
     // adds and removes wireframe from 3d object
     wireframe: false
@@ -76,6 +76,20 @@ const sphereMaterial = new THREE.MeshBasicMaterial({
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 scene.add(sphere);
 sphere.position.set(-10, 10, 0);
+
+// adding ambident light
+const ambientLight = new THREE.AmbientLight(0x333333);
+scene.add(ambientLight);
+
+// adding directional light
+const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 0.8);
+scene.add(directionalLight);
+
+directionalLight.position.set(-30, 50, 0);
+
+// directional light helper
+const dLightHelper = new THREE.DirectionalLightHelper(directionalLight, 5);
+scene.add(dLightHelper);
 
 // creating GUI instance
 const gui = new dat.GUI();
